@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "paths": {
+      "@/vuedraggable": [
+        "../src/vuedraggable.ts"
+      ]
+    },
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "types": [
+      "vite"
+    ]
+  }
+}

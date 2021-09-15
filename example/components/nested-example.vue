@@ -10,14 +10,10 @@
 </template>
 
 <script>
-import nestedDraggable from "./infra/nested";
 export default {
   name: "nested-example",
   display: "Nested",
   order: 15,
-  components: {
-    nestedDraggable
-  },
   data() {
     return {
       list: [

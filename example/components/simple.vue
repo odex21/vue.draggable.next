@@ -35,6 +35,9 @@
         :move="checkMove"
         @start="dragging = true"
         @end="dragging = false"
+        :sortable-options="{
+          animation: 150
+        }"
       >
         <template #item="{ element }">
           <div class="list-group-item" :class="{ 'not-draggable': !enabled }">
@@ -48,8 +51,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import draggable from "@/vuedraggable";
+
 let id = 1;
 export default {
   name: "simple",

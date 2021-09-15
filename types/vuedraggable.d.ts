@@ -1,4 +1,5 @@
-export default draggableComponent;
+import Sortable from 'sortablejs';
+import { PropType } from 'vue';
 declare const draggableComponent: import("vue").DefineComponent<{
     list: {
         type: ArrayConstructor;
@@ -31,38 +32,22 @@ declare const draggableComponent: import("vue").DefineComponent<{
         required: boolean;
         default: any;
     };
-}, any, {
+    sortableOptions: {
+        type: PropType<Sortable.SortableOptions>;
+        required: boolean;
+        default: () => {};
+    };
+}, () => any, {
     error: boolean;
-}, {
-    realList(): any;
-    getKey(): any;
-}, {
-    getUnderlyingVm(domElement: any): any;
-    getUnderlyingPotencialDraggableComponent(htmElement: any): any;
-    emitChanges(evt: any): void;
-    alterList(onList: any): void;
-    spliceList(): void;
-    updatePosition(oldIndex: any, newIndex: any): void;
-    getRelatedContextFromMoveEvent({ to, related }: {
-        to: any;
-        related: any;
-    }): any;
-    getVmIndexFromDomIndex(domIndex: any): any;
-    onDragStart(evt: any): void;
-    onDragAdd(evt: any): void;
-    onDragRemove(evt: any): void;
-    onDragUpdate(evt: any): void;
-    computeFutureIndex(relatedContext: any, evt: any): any;
-    onDragMove(evt: any, originalEvent: any): any;
-    onDragEnd(): void;
-}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, string[], string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<{
-    move: Function;
+}, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, string[], string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<{
     clone: Function;
-    componentData: Record<string, any>;
     tag: string;
-    list: unknown[];
-    modelValue: unknown[];
+    sortableOptions: {};
 } & {
+    move?: Function;
+    componentData?: Record<string, any>;
+    list?: unknown[];
+    modelValue?: unknown[];
     itemKey?: string | Function;
 }>, {
     move: Function;
@@ -71,4 +56,6 @@ declare const draggableComponent: import("vue").DefineComponent<{
     tag: string;
     list: unknown[];
     modelValue: unknown[];
+    sortableOptions: {};
 }>;
+export default draggableComponent;

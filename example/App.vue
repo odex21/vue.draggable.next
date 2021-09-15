@@ -74,38 +74,39 @@
         <li
           class="nav-item"
           v-for="component in componentList"
-          :key="component.name"
+          :key="component"
         >
           <a
             class="nav-link"
             data-toggle="tab"
-            :data-route="`/${component.name}`"
-            :href="`#${component.name}`"
+            :data-route="`/${component}`"
+            :href="`#${component}`"
             role="tab"
             aria-controls="profile"
-            >{{ component.display }}</a
           >
+            {{ component }}
+          </a>
         </li>
       </ul>
 
       <div class="tab-content" id="tab-content">
         <div
           class="tab-pane show"
-          :id="component.name"
+          :id="component"
           role="tabpanel"
           aria-labelledby="profile-tab"
           v-for="component in componentList"
-          :key="component.name"
+          :key="component"
         >
           <div class=" justify-content-center jumbotron main-container">
             <div class="row icon-container">
-              <div>{{ component.instruction }}</div>
+              <div>{{ component }}</div>
 
               <a
                 class="icon github"
                 target="_blank"
                 :href="
-                  `https://github.com/SortableJS/vue.draggable.next/blob/master/example/components/${component.name}.vue`
+                  `https://github.com/SortableJS/vue.draggable.next/blob/master/example/components/${component}.vue`
                 "
               >
                 <button class="btn btn-secondary">
@@ -114,8 +115,7 @@
                 </button>
               </a>
             </div>
-
-            <component :is="component.name"></component>
+            <component :is="component"></component>
           </div>
         </div>
       </div>
@@ -123,40 +123,29 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import $ from "jquery";
+import { defineComponent, defineAsyncComponent } from "vue";
+// import * as Components from "./components";
+const Components = import.meta.glob("./components/*.vue");
 
-const requireContext = require.context("./components/", false, /\.vue$/);
-const components = requireContext.keys().reduce((acc, key) => {
-  const component = requireContext(key).default;
-  acc[component.name] = component;
-  return acc;
-}, {});
+const components = Object.fromEntries(
+  Object.entries(Components).map(([p, comp]) => [
+    p
+      .split("/")
+      .pop()
+      .slice(0, -4),
+    defineAsyncComponent(comp)
+  ])
+);
 
-const showAll = process.env.VUE_APP_SHOW_ALL_EXAMPLES === "true";
-if (showAll) {
-  const order = Object.keys(components);
-  const requireContextDebug = require.context(
-    "./debug-components/",
-    false,
-    /\.vue$/
-  );
-  requireContextDebug.keys().reduce((acc, key) => {
-    const component = requireContextDebug(key).default;
-    component.order += order;
-    component.display = `DEBUG: ${component.display}`;
-    acc[component.name] = component;
-    return acc;
-  }, components);
-}
-
-export default {
+export default defineComponent({
   name: "app",
   components,
-  data() {
-    const componentList = Object.values(components)
-      .filter(component => component.show)
-      .sort((a, b) => a.order - b.order);
+  setup() {
+    const list = Object.keys(components);
+
+    const componentList = ref(list);
     return {
       componentList
     };
@@ -177,7 +166,7 @@ export default {
       this.toRoute(route);
     }
   }
-};
+});
 </script>
 
 <style>
